@@ -2,8 +2,25 @@
 
 import { SocialIcon } from 'react-social-icons'
 import { motion } from 'framer-motion'
+import { Social } from '@/typings';
+import { fetchSocials } from '@/utils/fetchSocials';
+import { useEffect, useState } from 'react';
+
 
 function Header() {
+
+    const [socials, setSocials] = useState<Social[]>([]);
+
+    useEffect(() => {
+        async function getSocials() {
+            const socials: Social[] = await fetchSocials();
+            // console.log(socials);
+            setSocials(socials);
+        }
+        getSocials();
+    }, [])
+
+
   return (
     <header className='sticky top-0 p-5 flex items-start justify-between max-w-7xl mx-auto z-20 xl:items-center'>
         <motion.div
@@ -22,19 +39,17 @@ function Header() {
             }}
             className='flex flex-row items-center'
         >
-            {/* Social Icons */}
-            <SocialIcon 
-                url="https://www.linkedin.com/in/mayaguhan/"
-                fgColor='gray'  
-                bgColor='transparent'
-            />
-            <SocialIcon 
-                url="https://github.com/mayaguhan"
-                fgColor='gray'  
-                bgColor='transparent'
-            />
+            {socials.map((social: Social) => (
+                <SocialIcon 
+                    key={social._id}
+                    url={social.url}
+                    fgColor='gray'  
+                    bgColor='transparent'
+                />
+            ))}
         </motion.div>
 
+        
         <motion.div
             initial={{
                 x: 500,
@@ -56,8 +71,9 @@ function Header() {
                 network='email'
                 fgColor='gray'  
                 bgColor='transparent'
+                url="#contact"
             />
-            <p className='uppercase hidden md:inline-flex text-gray-400'>Get in touch</p>
+            <a href="#contact" className='uppercase hidden md:inline-flex text-gray-400'>Get in touch</a>
         </motion.div>
     </header>
   )

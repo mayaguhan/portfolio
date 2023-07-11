@@ -5,13 +5,28 @@ import BackgroundCircles from './BackgroundCircles'
 import Image from 'next/image'
 import guhan from '../assets/guhan.jpg'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import { fetchPageInfo } from '@/utils/fetchPageInfo'
+import { PageInfo } from '@/typings'
 
 function Hero() {
+
+    const [pageInfo, setPageInfo] = useState<PageInfo>({} as PageInfo);
+
+    useEffect(() => {
+        async function getPageInfo() {
+            const pageInfo: PageInfo = await fetchPageInfo();
+            // console.log(pageInfo);
+            setPageInfo(pageInfo);
+        }
+
+        getPageInfo();
+    }, [])
+
     const [text,count] = useTypewriter({
         words: [
-            "Hi! My Name Is Guhan",
-            "Building the future, one line at a time",
-            "<NeverEndingLearning />"
+            `Hi, I'm ${pageInfo.name}!`,
+            "Building the future, one line at a time"
         ],
         loop: true,
         delaySpeed: 2000
@@ -28,7 +43,7 @@ function Hero() {
         />
         <div className='z-20'>
             <h2 className='text-sm uppercase text-gray-500 pb-2 tracking-[15px]'>
-                Software Engineer
+                {pageInfo.role}
             </h2>
             <h1 className='text-5xl lg:text-6xl font-semibold px-10'>
                 <span className='mr-3'>{text}</span> 
@@ -46,6 +61,9 @@ function Hero() {
                 </Link>
                 <Link href="#projects">
                     <button className='heroButton'>Projects</button>
+                </Link>
+                <Link href="#contact">
+                    <button className='heroButton'>Contact</button>
                 </Link>
             </div>
         </div>
