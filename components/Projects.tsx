@@ -57,7 +57,13 @@ function Projects({}: Props) {
                         }}
 
                         src={urlFor(project?.image).url()}
-                        className="w-[50%]"
+                        className="w-[50%] md:block hidden"
+                        alt=""
+                    />
+
+                    <img
+                        src={urlFor(project?.image).url()}
+                        className='md:hidden w-[50%]'
                         alt=""
                     />
 
@@ -80,7 +86,7 @@ function Projects({}: Props) {
 
                         
 
-                        <p className='lg:text-md xl:text-lg text-sm text-center md:text-left'>
+                        <p className='lg:text-md xl:text-lg text-sm text-center md:text-left px-2 pb-3'>
                            {project?.summary}
                         </p>
                     </div>
